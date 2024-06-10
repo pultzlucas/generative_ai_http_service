@@ -1,0 +1,12 @@
+[
+    {
+        "username": "person1@email.com",
+        "password": "person1",
+        "auth_method": "google"
+    },
+    {
+        "username": "person2@email.com",
+        "password": "person2",
+        "auth_method": "github"
+    }
+]
