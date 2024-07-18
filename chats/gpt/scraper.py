@@ -46,7 +46,7 @@ class GptScraper(ChatScraper):
         # self.driver.find_element(By.CSS_SELECTOR, self.send_button_selector)
 
     def is_processing(self):
-        selector = 'button[data-testid="fruitjuice-stop-button"'
+        selector = 'svg.icon-lg'
         is_processing = self.driver.execute_script(f"return document.body.contains(document.querySelector('{selector}'))")
         return is_processing
 
