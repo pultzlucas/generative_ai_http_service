@@ -12,21 +12,10 @@ class GptScraper(ChatScraper):
         super(GptScraper, self).__init__(username, driver)
         self.tries = 0
         self.text_input_selector = 'textarea#prompt-textarea'
-        self.send_button_selector = 'button[data-testid="send-button"]'
+        self.send_button_selector = 'button.mb-1'
 
     def write_prompt(self, prompt: str):
         prompt = prompt.replace('`', '')
-
-        try:
-            WebDriverWait(self.driver, 10)\
-                .until(EC.presence_of_element_located((By.CSS_SELECTOR, self.send_button_selector)))
-        except TimeoutException:
-            self.tries += 1
-            if self.tries >= 5:
-                raise ScraperFailureException()
-            self.refresh()
-            self.write_prompt(prompt)
-            return
 
         try:
             self.driver.execute_script(f"""
@@ -35,13 +24,13 @@ class GptScraper(ChatScraper):
                 input.dispatchEvent(new Event('input', {{ bubbles: true }}));
                 setTimeout(() => {{
                     document.querySelector('{self.send_button_selector}').click()
-                }}, 200)
+                }}, 300)
             """)
         except JavascriptException:
             raise ScraperFailureException()
 
     def get_prompt_result(self):
-        all_responses = self.driver.find_elements(By.CSS_SELECTOR, '.markdown.prose.w-full')
+        all_responses = self.driver.find_elements(By.CSS_SELECTOR, '.markdown.prose.w-full.break-words')
         try:
             return all_responses[-1].get_attribute('innerHTML')
         except:
@@ -57,19 +46,15 @@ class GptScraper(ChatScraper):
         # self.driver.find_element(By.CSS_SELECTOR, self.send_button_selector)
 
     def is_processing(self):
-        selector = 'svg[stroke="currentColor"]'
+        selector = 'button[data-testid="fruitjuice-stop-button"'
         is_processing = self.driver.execute_script(f"return document.body.contains(document.querySelector('{selector}'))")
-        selector = '.icon-xl.text-token-text-primary'
-        is_writing = self.driver.execute_script(f"return document.body.contains(document.querySelector('{selector}'))")
-        return is_processing or is_writing
+        return is_processing
 
     def is_blocked(self):
-        return self.driver.execute_script("return document.body.contains(document.querySelector('.border-red-500'))")
+        return self.driver.execute_script("return document.body.contains(document.querySelector('.text-token-text-error'))")
     
     def is_processable(self):
         return True
-        # block_href = self.driver.execute_script("return document.querySelector('.py-2.px-3.border.text-gray-600').querySelector('a') ? document.querySelector('.py-2.px-3.border.text-gray-600').querySelector('a').href : null")
-        # return not (block_href and 'usage-policies' in block_href)
                 
 
 

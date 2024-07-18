@@ -53,7 +53,7 @@ class ChatScraper():
                 break
             self.log_info(f'Waiting, {time.time() - start:.2f}s/{wait_time}s')
             if int(time.time() - start) >= wait_time:
-                return self.run_single_prompt(prompt_text)
+                return self.run_single_prompt(prompt)
             time.sleep(0.1)
 
         self.log_info('Processing prompt...')
