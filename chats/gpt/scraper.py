@@ -38,12 +38,6 @@ class GptScraper(ChatScraper):
 
     def open_new_chat(self):
         self.driver.refresh()
-        # self.driver.find_element(By.CSS_SELECTOR, ".text-ellipsis.text-sm.text-token-text-primary").click()
-        # try:
-        #     self.driver.execute_script("document.querySelectorAll('div[role=\"dialog\"] button')[1].click()")
-        # except:
-        #     pass
-        # self.driver.find_element(By.CSS_SELECTOR, self.send_button_selector)
 
     def is_processing(self):
         selector = 'svg.icon-lg'

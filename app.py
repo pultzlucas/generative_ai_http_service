@@ -2,8 +2,6 @@ from flask import Flask
 from flask_cors import CORS
 from flask import request
 from chats.gpt.setup import GptSetup
-from chats.bard.setup import BardSetup
-from chats.bing.setup import BingSetup
 from controllers.gpt import GptController
 # from controllers.bard import BardController
 # from controllers.bing import BingController
